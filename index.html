@@ -76,6 +76,9 @@
         
     </div>
     <script>
+        
+        let form = new FormData();
+
          var doc = (d)=> { return document.getElementById(d)};
         console.log(doc("city"));
         var [city,date,temperature,img] = [doc("city"),doc("date"),doc("temperature"),
@@ -88,7 +91,10 @@
         let tempmain = document.getElementById("temperature-main");
         btn.addEventListener("click",()=> {
             info.style.display = "block";
-            fetch(`http://api.weatherapi.com/v1/current.json?key=022de12ff6a24c39b8b163154220205&q=${input.value}&aqi=no`).then((response)=> {
+            fetch(`https://api.weatherapi.com/v1/current.json?key=022de12ff6a24c39b8b163154220205&q=${input.value}&aqi=no`,{
+                method:"GET",
+                mode:"cors"
+            }).then((response)=> {
             return response.json();
         })
         .then((data)=> {
