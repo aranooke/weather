@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src = "index.js"></script>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-size:16px;
+            margin: 0;
+            padding: 0;
+            color:white;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .weather {
+            margin:0 auto;
+            text-align: center;
+            background: rgb(76,9,121);
+            background: linear-gradient(90deg, rgba(76,9,121,1) 0%, rgba(201,0,255,1) 91%);
+            max-width:400px;
+            border-radius:20px;
+            position: absolute;
+            padding: 40px 50px;
+            top:20%;
+            left:30%;
+        }
+        .object-cover {
+            position: relative;
+        }
+        .info {
+            display:none;
+        }
+        .flex-data {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #video {
+            opacity: 0.9;
+            filter: contrast(3) brightness(1.5) grayscale(0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <video id = "video" loop="loop" autoplay="autoplay" playsinline="" muted="muted" class="w-full h-full object-cover" style="min-height: 800px;width:100%;object-fit:cover"><source src="videos/section-video.mp4" type="video/mp4">
+        <source src="video/people.mp4" type="video/mp4">
+    </video>
+    <div class="weather">
+        <input id = "input"  class = "input" placeholder="Enter a city name" type="text">
+        <button id = "btn" class="waves-effect waves-light btn">Найти погоду</button>
+        <div id = "info" class="info">
+            <div class="flex-data">
+                <h5 id ="text"></h5>
+                <h5 id = "temperature-main"></h5>
+                <img id = "img" src="" alt="">
+            </div>
+            <h4 id = "city"></h4>
+            <h4 id = "date"></h4>
+            <div  class="flex-weather">
+                <h4 id = "temperature">Temperature:</h4>
+                
+
+            </div>
+    </div>
+        
+    </div>
+    <script>
+         var doc = (d)=> { return document.getElementById(d)};
+        console.log(doc("city"));
+        var [city,date,temperature,img] = [doc("city"),doc("date"),doc("temperature"),
+                                            doc("img")];
+       
+        let btn = document.getElementById("btn");
+        let input = document.getElementById("input");
+        let info = document.getElementById("info");
+        let text = document.getElementById("text");
+        let tempmain = document.getElementById("temperature-main");
+        btn.addEventListener("click",()=> {
+            info.style.display = "block";
+            fetch(`http://api.weatherapi.com/v1/current.json?key=022de12ff6a24c39b8b163154220205&q=${input.value}&aqi=no`).then((response)=> {
+            return response.json();
+        })
+        .then((data)=> {
+            console.log(data);
+            text.innerHTML = `${data.current.condition.text}`;
+            city.innerHTML = `Город: ${data.location.name}`;
+            date.innerHTML = `День: ${data.location.localtime}`;
+            temperature.innerHTML = `Температура: ${data.current.temp_c}`;
+            img.src = `https:${data.current.condition.icon}`;
+        })
+        })
+
+       
+        
+    </script>
+</body>
+</html>
